@@ -9,15 +9,12 @@ import java.util.function.Predicate;
 public class ParkingLotSystem {
     private int parkingLotCapacity;
     List<ParkingLotObserver> parkingLotObserver;
-    private List<Object> vehicles;
-    private ParkingLotAttendant parkingLotAttendant;
     public ParkingLot parkingLot = new ParkingLot();
+    Integer parkingSlot=0;
 
     public ParkingLotSystem(int parkingLotCapacity) {
         this.parkingLotCapacity = parkingLotCapacity;
         parkingLotObserver = new ArrayList();
-        vehicles = new ArrayList<>();
-        parkingLotAttendant = new ParkingLotAttendant();
     }
 
     public void RegisterObserver(ParkingLotObserver owner) {
@@ -31,10 +28,9 @@ public class ParkingLotSystem {
                 observer.parkingLotIsFull();
             throw new ParkingLotException("Parking lot is full");
         }
-        ParkingLotOwner parkingLotOwner = (ParkingLotOwner) parkingLotObserver.get(0);
-        parkingLotAttendant.attendantToParkCar(parkingLot, parkingLotOwner.getParkingSlot(), vehicle);
+        parkingLot.parkVehicle(parkingSlot,vehicle);
+        parkingSlot++;
     }
-
 
     public boolean unPark(Object vehicle) {
         if (parkingLot.vehicleSlotMap.size() == 0) return false;
@@ -51,5 +47,13 @@ public class ParkingLotSystem {
         if (parkingLot.vehicleSlotMap.containsValue(vehicle))
             return true;
         return false;
+    }
+
+    public Integer findMyCar(Object vehicle) {
+        for ( Integer position: parkingLot.vehicleSlotMap.keySet() ) {
+            if (parkingLot.vehicleSlotMap.get(position).equals(vehicle))
+                return position;
+        }
+        return null;
     }
 }

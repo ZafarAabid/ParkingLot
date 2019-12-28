@@ -27,7 +27,6 @@ public class ParkingLotTest {
             boolean isVehicleParked = parkingLotSystem.isVehicleParked(vehicle);
             Assert.assertTrue(isVehicleParked);
         } catch (ParkingLotException e) {
-            e.printStackTrace();
         }
     }
 
@@ -39,14 +38,14 @@ public class ParkingLotTest {
             boolean isVehicleParked = false;
             isVehicleParked = parkingLotSystem.unPark(vehicle);
             Assert.assertTrue(isVehicleParked);
-        } catch (ParkingLotException e) {
-        }
+        } catch (ParkingLotException e) { }
     }
 
     @Test
     public void givenParkingLot_WhenVehicleIsNotParked_shouldReturnFalse() {
-        boolean isVehicleParked = false;
-        isVehicleParked = parkingLotSystem.unPark(vehicle);
+        boolean isVehicleParked = parkingLotSystem.unPark(vehicle);
+        Assert.assertFalse(isVehicleParked);
+
     }
 
     @Test
@@ -56,9 +55,7 @@ public class ParkingLotTest {
             parkingLotSystem.park(vehicle);
             boolean isVehicleParked = parkingLotSystem.unPark(new Object());
             Assert.assertFalse(isVehicleParked);
-        } catch (ParkingLotException e) {
-            Assert.assertEquals("Such Type Vehicle Not Found", e.getMessage());
-        }
+        } catch (ParkingLotException e) { }
     }
 
     @Test
@@ -76,16 +73,13 @@ public class ParkingLotTest {
 
     @Test
     public void givenParkingLot_WhenParkingLotGetFull_ShouldInformOwner() {
-        Boolean lotFull;
         try {
             parkingLotSystem.RegisterObserver(owner);
             parkingLotSystem.park(vehicle);
             parkingLotSystem.park(vehicle);
-            lotFull = owner.isParkingLotFull();
             parkingLotSystem.park(vehicle);
         } catch (ParkingLotException e) {
-            lotFull = owner.isParkingLotFull();
-            Assert.assertTrue(lotFull);
+            Assert.assertTrue(owner.isParkingLotFull());
         }
     }
 
@@ -98,8 +92,7 @@ public class ParkingLotTest {
             parkingLotSystem.park(vehicle);
             parkingLotSystem.park(vehicle);
         } catch (ParkingLotException e) {
-            boolean lotFull = security.isParkingLotFull();
-            Assert.assertTrue(lotFull);
+            Assert.assertTrue(security.isParkingLotFull());
         }
     }
 
@@ -110,8 +103,7 @@ public class ParkingLotTest {
             parkingLotSystem.park(vehicle);
             parkingLotSystem.park(new Object());
             parkingLotSystem.park(new Object());
-        } catch (ParkingLotException e) {
-        }
+        } catch (ParkingLotException e) { }
         parkingLotSystem.unPark(vehicle);
         boolean lotFull = owner.isParkingLotEmpty();
         Assert.assertFalse(lotFull);
@@ -124,9 +116,7 @@ public class ParkingLotTest {
             parkingLotSystem.park(vehicle);
             boolean isVehicleParked = parkingLotSystem.isVehicleParked(vehicle);
             Assert.assertTrue(isVehicleParked);
-        } catch (ParkingLotException e) {
-            e.printStackTrace();
-        }
+        } catch (ParkingLotException e) { }
     }
 
     @Test
@@ -148,8 +138,7 @@ public class ParkingLotTest {
             parkingLotSystem.park(vehicle);
             boolean isVehicleParked = parkingLotSystem.isVehicleParked(vehicle);
             Assert.assertTrue(isVehicleParked);
-        } catch (ParkingLotException e) {
-        }
+        } catch (ParkingLotException e) { }
     }
 
     @Test
@@ -163,8 +152,6 @@ public class ParkingLotTest {
             Assert.assertEquals("Parking lot is full", e.getMessage());
         }
     }
-
-
 
 
 }
