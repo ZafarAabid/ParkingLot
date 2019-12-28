@@ -22,7 +22,9 @@ public class ParkingLotTest {
     @Test
     public void givenParkingLot_WhenVehicleParked_shouldReturnTrue() {
         try {
-            boolean isVehicleParked = parkingLotSystem.park(new Object());
+            parkingLotSystem.RegisterObserver(owner);
+            parkingLotSystem.park(vehicle);
+            boolean isVehicleParked = parkingLotSystem.isVehicleParked(vehicle);
             Assert.assertTrue(isVehicleParked);
         } catch (ParkingLotException e) {
             e.printStackTrace();
@@ -32,6 +34,7 @@ public class ParkingLotTest {
     @Test
     public void givenParkingLot_WhenVehicleParked_shouldUnparked() {
         try {
+            parkingLotSystem.RegisterObserver(owner);
             parkingLotSystem.park(vehicle);
             boolean isVehicleParked = false;
             isVehicleParked = parkingLotSystem.unPark(vehicle);
@@ -49,9 +52,10 @@ public class ParkingLotTest {
     @Test
     public void givenParkingLot_WhenAttemptToUnparkDifferentVehicle_shouldReturnFalse() {
         try {
+            parkingLotSystem.RegisterObserver(owner);
             parkingLotSystem.park(vehicle);
-            boolean isVehicleParked = false;
-            isVehicleParked = parkingLotSystem.unPark(new Object());
+            boolean isVehicleParked = parkingLotSystem.unPark(new Object());
+            Assert.assertFalse(isVehicleParked);
         } catch (ParkingLotException e) {
             Assert.assertEquals("Such Type Vehicle Not Found", e.getMessage());
         }
@@ -60,6 +64,7 @@ public class ParkingLotTest {
     @Test
     public void givenParkingLot_WhenParkingLotGetFull_ShouldThrowException() {
         try {
+            parkingLotSystem.RegisterObserver(owner);
             parkingLotSystem.park(vehicle);
             Object vehicle2 = new Object();
             parkingLotSystem.park(vehicle2);
@@ -87,6 +92,7 @@ public class ParkingLotTest {
     @Test
     public void givenParkingLot_WhenParkingLotGetFull_ShouldInformAirportSecurity() {
         try {
+            parkingLotSystem.RegisterObserver(owner);
             parkingLotSystem.RegisterObserver(security);
             parkingLotSystem.park(vehicle);
             parkingLotSystem.park(vehicle);
@@ -114,10 +120,22 @@ public class ParkingLotTest {
     @Test
     public void givenParkingLot_HavingAttendant_shouldBeAbleToParkCar() {
         try {
+            parkingLotSystem.RegisterObserver(owner);
+            parkingLotSystem.park(vehicle);
+            boolean isVehicleParked = parkingLotSystem.isVehicleParked(vehicle);
+            Assert.assertTrue(isVehicleParked);
+        } catch (ParkingLotException e) {
+            e.printStackTrace();
+        }
+    }
 
-            ParkingLotAttendant parkingLotAttendant = new ParkingLotAttendant(vehicle);
-            parkingLotSystem.getParkingLotAttendant(parkingLotAttendant);
-            Assert.assertEquals(parkingLotAttendant,parkingLotAttendant);
+    @Test
+    public void givenParkingLotHavingAttendant_IfVehicleIsNtParked_ShouldReturnFalse() {
+        try {
+            parkingLotSystem.RegisterObserver(owner);
+            parkingLotSystem.park(vehicle);
+            boolean isVehicleParked = parkingLotSystem.isVehicleParked(new Object());
+            Assert.assertFalse(isVehicleParked);
         } catch (ParkingLotException e) {
             e.printStackTrace();
         }
@@ -127,9 +145,9 @@ public class ParkingLotTest {
     public void givenParkingLot_HavingAttendant_shouldBeAbleToParkInDecidedSlot() {
         try {
             parkingLotSystem.RegisterObserver(owner);
-            ParkingLotAttendant parkingLotAttendant = new ParkingLotAttendant(vehicle);
-            ParkingLotAttendant attendant = parkingLotSystem.getParkingLotAttendant(parkingLotAttendant);
-            Assert.assertEquals(attendant,parkingLotAttendant);
+            parkingLotSystem.park(vehicle);
+            boolean isVehicleParked = parkingLotSystem.isVehicleParked(vehicle);
+            Assert.assertTrue(isVehicleParked);
         } catch (ParkingLotException e) {
         }
     }
@@ -138,16 +156,15 @@ public class ParkingLotTest {
     public void givenParkingLot_HavingAttendant_WhenParkingLotFullShouldThrowException() {
         try {
             parkingLotSystem.RegisterObserver(owner);
-            ParkingLotAttendant parkingLotAttendant = new ParkingLotAttendant(vehicle);
-            ParkingLotAttendant parkingLotAttendant2 = new ParkingLotAttendant(vehicle);
-            ParkingLotAttendant parkingLotAttendant3 = new ParkingLotAttendant(vehicle);
-            parkingLotSystem.getParkingLotAttendant(parkingLotAttendant);
-            parkingLotSystem.getParkingLotAttendant(parkingLotAttendant2);
-            parkingLotSystem.getParkingLotAttendant(parkingLotAttendant3);
+            parkingLotSystem.park(vehicle);
+            parkingLotSystem.park(vehicle);
+            parkingLotSystem.park(vehicle);
         } catch (ParkingLotException e) {
             Assert.assertEquals("Parking lot is full", e.getMessage());
         }
     }
+
+
 
 
 }
