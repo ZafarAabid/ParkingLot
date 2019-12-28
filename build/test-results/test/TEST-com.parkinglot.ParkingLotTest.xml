@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.parkinglot.ParkingLotTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2019-12-27T12:10:27" hostname="admin1-desktop" time="0.003">
+  <properties/>
+  <testcase name="givenParkingLot_WhenParkingLotGetFull_ShouldInformAirportSecurity" classname="com.parkinglot.ParkingLotTest" time="0.001"/>
+  <testcase name="givenParkingLot_WhenParkingLotGetFull_ShouldInformOwner" classname="com.parkinglot.ParkingLotTest" time="0.0"/>
+  <testcase name="givenParkingLot_WhenVehicleIsNotParked_shouldReturnFalse" classname="com.parkinglot.ParkingLotTest" time="0.0"/>
+  <testcase name="givenParkingLot_WhenParkingLotGetFull_ShouldThrowException" classname="com.parkinglot.ParkingLotTest" time="0.0"/>
+  <testcase name="givenParkingLot_WhenVehicleParked_shouldReturnTrue" classname="com.parkinglot.ParkingLotTest" time="0.0"/>
+  <testcase name="givenParkingLot_WhenAttemptToUnparkDifferentVehicle_shouldReturnFalse" classname="com.parkinglot.ParkingLotTest" time="0.0"/>
+  <testcase name="givenParkingLot_WhenVehicleParked_shouldUnparked" classname="com.parkinglot.ParkingLotTest" time="0.0"/>
+  <testcase name="givenParkingLot_WhenParkingLotGetEmptyAfterFull_ShouldInformOwner" classname="com.parkinglot.ParkingLotTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
