@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.IntStream;
 
 public class ParkingLot {
     Map<Integer, ParkingSlot> vehicleSlotMap;
@@ -12,17 +13,15 @@ public class ParkingLot {
     ParkingLot(Integer parkingLotSize) {
         vehicleSlotMap = new HashMap<>();
         unOccupiedSlotList = new ArrayList<Integer>();
-        for (int slotPositions = 0; slotPositions < parkingLotSize; slotPositions++) {
-            unOccupiedSlotList.add(slotPositions);
-        }
+        IntStream.range(0, parkingLotSize).forEach(slotNumber -> this.unOccupiedSlotList.add(slotNumber));
     }
 
     public void parkVehicle(Object vehicle) {
-        vehicleSlotMap.put(unOccupiedSlotList.remove(0), new ParkingSlot(vehicle));
+        vehicleSlotMap.put(unOccupiedSlotList.remove(0), new ParkingSlot(this,vehicle));
     }
 
     public void parkVehicle(Integer slotPosition, Object vehicle) {
-        vehicleSlotMap.put(slotPosition, new ParkingSlot(vehicle));
+        vehicleSlotMap.put(slotPosition, new ParkingSlot(this,vehicle));
         unOccupiedSlotList.remove(slotPosition);
     }
 

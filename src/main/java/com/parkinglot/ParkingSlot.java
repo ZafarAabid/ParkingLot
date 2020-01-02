@@ -7,10 +7,12 @@ public class
 ParkingSlot {
     public final Object vehicle;
     private final long vehicleParkingTime;
+    public ParkingLot parkingLot;
 
-    public ParkingSlot(Object vehicle) {
+    public ParkingSlot(ParkingLot parkingLotObject, Object vehicle) {
         this.vehicleParkingTime = System.currentTimeMillis();
         this.vehicle = vehicle;
+        this.parkingLot = parkingLotObject;
     }
 
     @Override

@@ -15,14 +15,14 @@ public class ParkingLotTest {
 
     @Before
     public void setUp() throws Exception {
-        parkingLotSystem = new ParkingLotSystem(5);
+        parkingLotSystem = new ParkingLotSystem(3, 5);
         vehicle = new Object();
         owner = new ParkingLotOwner();
     }
 
     @Test
     public void givenParkingLot_WhenVehicleParked_shouldReturnTrue() {
-        ParkingLotSystem parkingLotSystem = new ParkingLotSystem(5);
+        ParkingLotSystem parkingLotSystem = new ParkingLotSystem(3, 5);
         try {
             parkingLotSystem.registerObserver(owner);
             parkingLotSystem.park(vehicle);
@@ -34,7 +34,7 @@ public class ParkingLotTest {
 
     @Test
     public void givenParkingLot_WhenVehicleParked_shouldUnparked() {
-        ParkingLotSystem parkingLotSystem = new ParkingLotSystem(5);
+        ParkingLotSystem parkingLotSystem = new ParkingLotSystem(3, 5);
         try {
             parkingLotSystem.registerObserver(owner);
             parkingLotSystem.park(vehicle);
@@ -55,7 +55,7 @@ public class ParkingLotTest {
 
     @Test
     public void givenParkingLot_WhenAttemptToUnparkDifferentVehicle_shouldThrowException() {
-        ParkingLotSystem parkingLotSystem = new ParkingLotSystem(5);
+        ParkingLotSystem parkingLotSystem = new ParkingLotSystem(1, 5);
         try {
             parkingLotSystem.registerObserver(owner);
             parkingLotSystem.park(vehicle);
@@ -67,7 +67,7 @@ public class ParkingLotTest {
 
     @Test
     public void givenParkingLot_WhenParkingLotGetFull_ShouldThrowException() {
-        ParkingLotSystem parkingLotSystem = new ParkingLotSystem(5);
+        ParkingLotSystem parkingLotSystem = new ParkingLotSystem(1, 5);
         try {
             parkingLotSystem.registerObserver(owner);
             parkingLotSystem.park(vehicle);
@@ -81,7 +81,7 @@ public class ParkingLotTest {
 
     @Test
     public void givenParkingLot_WhenParkingLotGetFull_ShouldInformOwner() {
-        ParkingLotSystem parkingLotSystem = new ParkingLotSystem(5);
+        ParkingLotSystem parkingLotSystem = new ParkingLotSystem(1, 5);
         try {
             parkingLotSystem.registerObserver(owner);
             parkingLotSystem.park(vehicle);
@@ -94,7 +94,7 @@ public class ParkingLotTest {
 
     @Test
     public void givenParkingLot_WhenParkingLotGetFull_ShouldInformAirportSecurity() {
-        ParkingLotSystem parkingLotSystem = new ParkingLotSystem(5);
+        ParkingLotSystem parkingLotSystem = new ParkingLotSystem(1, 5);
         try {
             parkingLotSystem.registerObserver(owner);
             parkingLotSystem.registerObserver(security);
@@ -108,7 +108,7 @@ public class ParkingLotTest {
 
     @Test
     public void givenParkingLot_WhenParkingLotGetEmptyAfterFull_ShouldInformOwner() {
-        ParkingLotSystem parkingLotSystem = new ParkingLotSystem(5);
+        ParkingLotSystem parkingLotSystem = new ParkingLotSystem(1, 5);
         try {
             parkingLotSystem.registerObserver(owner);
             parkingLotSystem.park(vehicle);
@@ -122,7 +122,7 @@ public class ParkingLotTest {
 
     @Test
     public void givenParkingLot_HavingAttendant_shouldBeAbleToParkCar() {
-        ParkingLotSystem parkingLotSystem = new ParkingLotSystem(5);
+        ParkingLotSystem parkingLotSystem = new ParkingLotSystem(1, 5);
         try {
             parkingLotSystem.registerObserver(owner);
             parkingLotSystem.park(vehicle);
@@ -134,7 +134,7 @@ public class ParkingLotTest {
 
     @Test
     public void givenParkingLotHavingAttendant_IfVehicleIsNtParked_ShouldReturnFalse() {
-        ParkingLotSystem parkingLotSystem = new ParkingLotSystem(5);
+        ParkingLotSystem parkingLotSystem = new ParkingLotSystem(1, 5);
         try {
             parkingLotSystem.registerObserver(owner);
             parkingLotSystem.park(vehicle);
@@ -147,17 +147,19 @@ public class ParkingLotTest {
 
     @Test
     public void givenParkingLot_IfDemandedForSlot_shouldBeAbleToGetEmptySlotList() {
-        ParkingLotSystem parkingLotSystem = new ParkingLotSystem(5);
+        ParkingLotSystem parkingLotSystem = new ParkingLotSystem(1, 5);
         parkingLotSystem.registerObserver(owner);
         ArrayList emptySlots = (ArrayList) parkingLotSystem.findEmptySlots();
+        emptySlots.forEach(System.out::println);
         Integer slotPosition = (int) (Math.random() * emptySlots.size());
+        System.out.println(slotPosition);
         Assert.assertNotNull(slotPosition);
     }
 
     @Test
     public void givenParkingLot_HavingAttendant_shouldBeAbleToParkInDecidedSlot() {
         try {
-            ParkingLotSystem parkingLotSystem = new ParkingLotSystem(5);
+            ParkingLotSystem parkingLotSystem = new ParkingLotSystem(1, 5);
             parkingLotSystem.registerObserver(owner);
             ArrayList emptySlots = (ArrayList) parkingLotSystem.findEmptySlots();
             Integer slotPosition = (int) (Math.random() * emptySlots.size());
@@ -171,7 +173,7 @@ public class ParkingLotTest {
 
     @Test
     public void givenParkingSlots_ifVehicleParked_ShouldBeAbleToCharge() {
-        ParkingLotSystem parkingLotSystem = new ParkingLotSystem(5);
+        ParkingLotSystem parkingLotSystem = new ParkingLotSystem(1, 5);
         try {
             parkingLotSystem.registerObserver(owner);
             parkingLotSystem.park(vehicle);
@@ -179,5 +181,33 @@ public class ParkingLotTest {
             Assert.assertEquals(vehicle,returningVehicle);
         } catch (ParkingLotException e) {
         }
+    }
+
+    @Test
+    public void givenMultipleParkingLots_ifVehicleComes_ShouldUseEvenDistributionForParking() {
+        ParkingLotSystem parkingLotSystem = new ParkingLotSystem(2,4);
+        parkingLotSystem.registerObserver(owner);
+        try {
+
+            parkingLotSystem.park(vehicle);
+            Integer pos1 = parkingLotSystem.findMyCar(vehicle);
+
+            Object vehicle2 = new Object();
+            parkingLotSystem.park(vehicle2);
+            Integer pos2 = parkingLotSystem.findMyCar(vehicle2);
+
+            Object vehicle3 = new Object();
+            parkingLotSystem.park(vehicle3);
+            Integer pos3 = parkingLotSystem.findMyCar(vehicle3);
+
+            Object vehicle4 = new Object();
+            parkingLotSystem.park(vehicle4);
+            Integer pos4 = parkingLotSystem.findMyCar(vehicle4);
+
+            Assert.assertEquals((Integer) 0,pos1);
+            Assert.assertEquals((Integer)0,pos2);
+            Assert.assertEquals((Integer)1,pos3);
+            Assert.assertEquals((Integer)1,pos4);
+        } catch (ParkingLotException e) { }
     }
 }
