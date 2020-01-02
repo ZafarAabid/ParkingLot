@@ -146,4 +146,21 @@ public class ParkingLotTest {
         Assert.assertNotNull(slotPosition);
     }
 
+    @Test
+    public void givenParkingLot_HavingAttendant_shouldBeAbleToParkInDecidedSlot() {
+        try {
+            ParkingLotSystem parkingLotSystem = new ParkingLotSystem(5);
+            parkingLotSystem.RegisterObserver(owner);
+            ArrayList emptySlots = (ArrayList) parkingLotSystem.findEmptySlots();
+            Integer slotPosition = (int) (Math.random() * emptySlots.size());
+            parkingLotSystem.park(slotPosition,vehicle);
+            Integer carParkedOnSlot = parkingLotSystem.findMyCar(vehicle);
+            Assert.assertEquals(slotPosition,carParkedOnSlot);
+        } catch (ParkingLotException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
 }
