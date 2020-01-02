@@ -1,20 +1,22 @@
 package com.parkinglot;
 
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Predicate;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 public class ParkingLotSystem {
     private int parkingLotCapacity;
     List<ParkingLotObserver> parkingLotObserver;
-    public ParkingLot parkingLot = new ParkingLot();
-    Integer parkingSlot=0;
+    public ParkingLot parkingLot;
 
     public ParkingLotSystem(int parkingLotCapacity) {
         this.parkingLotCapacity = parkingLotCapacity;
         parkingLotObserver = new ArrayList();
+        parkingLot = new ParkingLot(parkingLotCapacity);
     }
 
     public void RegisterObserver(ParkingLotObserver owner) {
@@ -28,8 +30,13 @@ public class ParkingLotSystem {
                 observer.parkingLotIsFull();
             throw new ParkingLotException("Parking lot is full");
         }
-        parkingLot.parkVehicle(parkingSlot,vehicle);
-        parkingSlot++;
+        parkingLot.parkVehicle(vehicle);
+    }
+
+    public void park(Integer slotPosition, Object vehicle) throws ParkingLotException {
+        if (parkingLot.vehicleSlotMap.size() == this.parkingLotCapacity)
+            throw new ParkingLotException("Parking lot is full");
+        parkingLot.parkVehicle(slotPosition, vehicle);
     }
 
     public boolean unPark(Object vehicle) {
@@ -50,10 +57,14 @@ public class ParkingLotSystem {
     }
 
     public Integer findMyCar(Object vehicle) {
-        for ( Integer position: parkingLot.vehicleSlotMap.keySet() ) {
-            if (parkingLot.vehicleSlotMap.get(position).equals(vehicle))
-                return position;
-        }
-        return null;
+        return parkingLot.vehicleSlotMap
+                .entrySet()
+                .stream()
+                .filter(a -> a.getValue().equals(vehicle))
+                .findFirst().orElse(null).getKey();
+    }
+
+    public List findEmptySlots() {
+        return parkingLot.unOccupiedSlotList;
     }
 }

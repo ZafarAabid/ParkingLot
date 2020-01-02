@@ -4,6 +4,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+
 public class ParkingLotTest {
 
     ParkingLotSystem parkingLotSystem;
@@ -14,7 +16,7 @@ public class ParkingLotTest {
 
     @Before
     public void setUp() throws Exception {
-        parkingLotSystem = new ParkingLotSystem(2);
+        parkingLotSystem = new ParkingLotSystem(5);
         vehicle = new Object();
         owner = new ParkingLotOwner();
     }
@@ -38,7 +40,8 @@ public class ParkingLotTest {
             boolean isVehicleParked = false;
             isVehicleParked = parkingLotSystem.unPark(vehicle);
             Assert.assertTrue(isVehicleParked);
-        } catch (ParkingLotException e) { }
+        } catch (ParkingLotException e) {
+        }
     }
 
     @Test
@@ -55,7 +58,8 @@ public class ParkingLotTest {
             parkingLotSystem.park(vehicle);
             boolean isVehicleParked = parkingLotSystem.unPark(new Object());
             Assert.assertFalse(isVehicleParked);
-        } catch (ParkingLotException e) { }
+        } catch (ParkingLotException e) {
+        }
     }
 
     @Test
@@ -103,7 +107,8 @@ public class ParkingLotTest {
             parkingLotSystem.park(vehicle);
             parkingLotSystem.park(new Object());
             parkingLotSystem.park(new Object());
-        } catch (ParkingLotException e) { }
+        } catch (ParkingLotException e) {
+        }
         parkingLotSystem.unPark(vehicle);
         boolean lotFull = owner.isParkingLotEmpty();
         Assert.assertFalse(lotFull);
@@ -116,7 +121,8 @@ public class ParkingLotTest {
             parkingLotSystem.park(vehicle);
             boolean isVehicleParked = parkingLotSystem.isVehicleParked(vehicle);
             Assert.assertTrue(isVehicleParked);
-        } catch (ParkingLotException e) { }
+        } catch (ParkingLotException e) {
+        }
     }
 
     @Test
@@ -132,26 +138,12 @@ public class ParkingLotTest {
     }
 
     @Test
-    public void givenParkingLot_HavingAttendant_shouldBeAbleToParkInDecidedSlot() {
-        try {
-            parkingLotSystem.RegisterObserver(owner);
-            parkingLotSystem.park(vehicle);
-            boolean isVehicleParked = parkingLotSystem.isVehicleParked(vehicle);
-            Assert.assertTrue(isVehicleParked);
-        } catch (ParkingLotException e) { }
+    public void givenParkingLot_IfDemandedForSlot_shouldBeAbleToGetEmptySlotList() {
+        ParkingLotSystem parkingLotSystem = new ParkingLotSystem(5);
+        parkingLotSystem.RegisterObserver(owner);
+        ArrayList emptySlots = (ArrayList) parkingLotSystem.findEmptySlots();
+        Integer slotPosition = (int) (Math.random() * emptySlots.size());
+        Assert.assertNotNull(slotPosition);
     }
-
-    @Test
-    public void givenParkingLot_HavingAttendant_WhenParkingLotFullShouldThrowException() {
-        try {
-            parkingLotSystem.RegisterObserver(owner);
-            parkingLotSystem.park(vehicle);
-            parkingLotSystem.park(vehicle);
-            parkingLotSystem.park(vehicle);
-        } catch (ParkingLotException e) {
-            Assert.assertEquals("Parking lot is full", e.getMessage());
-        }
-    }
-
 
 }
