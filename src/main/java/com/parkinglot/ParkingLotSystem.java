@@ -1,25 +1,20 @@
 package com.parkinglot;
 
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 public class ParkingLotSystem {
     private int parkingLotCapacity;
-    List<ParkingLotObserver> parkingLotObserver;
     public ParkingLot parkingLot;
+    List<ParkingLotObserver> parkingLotObserver;
 
     public ParkingLotSystem(int parkingLotCapacity) {
-        this.parkingLotCapacity = parkingLotCapacity;
         parkingLotObserver = new ArrayList();
         parkingLot = new ParkingLot(parkingLotCapacity);
+        this.parkingLotCapacity = parkingLotCapacity;
     }
 
-    public void RegisterObserver(ParkingLotObserver owner) {
+    public void registerObserver(ParkingLotObserver owner) {
         parkingLotObserver.add(owner);
     }
 
@@ -28,32 +23,32 @@ public class ParkingLotSystem {
         if (parkingLot.vehicleSlotMap.size() == this.parkingLotCapacity) {
             for (ParkingLotObserver observer : parkingLotObserver)
                 observer.parkingLotIsFull();
-            throw new ParkingLotException("Parking lot is full");
+            throw new ParkingLotException("Parking lot is full", ParkingLotException.ExceptionType.PARKING_LOT_FULL);
         }
         parkingLot.parkVehicle(vehicle);
     }
 
     public void park(Integer slotPosition, Object vehicle) throws ParkingLotException {
         if (parkingLot.vehicleSlotMap.size() == this.parkingLotCapacity)
-            throw new ParkingLotException("Parking lot is full");
+            throw new ParkingLotException("Parking lot is full", ParkingLotException.ExceptionType.PARKING_LOT_FULL);
         parkingLot.parkVehicle(slotPosition, vehicle);
     }
 
-    public boolean unPark(Object vehicle) {
-        if (parkingLot.vehicleSlotMap.size() == 0) return false;
-        if (parkingLot.vehicleSlotMap.containsValue(vehicle)) {
-            parkingLot.vehicleSlotMap.remove(vehicle);
-            for (ParkingLotObserver observer : parkingLotObserver)
-                observer.parkingLotIsEmpty();
-            return true;
-        }
-        return false;
+    public Object unPark(Object vehicle) throws ParkingLotException {
+        Integer positionOfVehicle = parkingLot.vehicleLocation(vehicle);
+        ParkingSlot slot = parkingLot.vehicleSlotMap.remove(positionOfVehicle);
+        parkingLot.unOccupiedSlotList.add(positionOfVehicle);
+        parkingLot.unOccupiedSlotList.sort(Integer::compareTo);
+        return slot.vehicle;
     }
 
     public boolean isVehicleParked(Object vehicle) {
-        if (parkingLot.vehicleSlotMap.containsValue(vehicle))
-            return true;
-        return false;
+        try {
+            parkingLot.vehicleLocation(vehicle);
+        } catch (ParkingLotException e) {
+            return false;
+        }
+        return true;
     }
 
     public Integer findMyCar(Object vehicle) {

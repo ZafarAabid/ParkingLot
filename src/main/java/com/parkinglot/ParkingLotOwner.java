@@ -2,7 +2,7 @@ package com.parkinglot;
 
 public class ParkingLotOwner implements ParkingLotObserver{
 
-    private Boolean parkingLotIsFull;
+    private Boolean parkingLotIsFull =false;
 
     @Override
     public void parkingLotIsFull() {
