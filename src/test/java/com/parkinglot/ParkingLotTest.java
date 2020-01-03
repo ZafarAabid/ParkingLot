@@ -140,9 +140,7 @@ public class ParkingLotTest {
             parkingLotSystem.park(vehicle);
             boolean isVehicleParked = parkingLotSystem.isVehicleParked(new Object());
             Assert.assertFalse(isVehicleParked);
-        } catch (ParkingLotException e) {
-            e.printStackTrace();
-        }
+        } catch (ParkingLotException e) { }
     }
 
     @Test
@@ -150,9 +148,7 @@ public class ParkingLotTest {
         ParkingLotSystem parkingLotSystem = new ParkingLotSystem(1, 5);
         parkingLotSystem.registerObserver(owner);
         ArrayList emptySlots = (ArrayList) parkingLotSystem.findEmptySlots();
-        emptySlots.forEach(System.out::println);
         Integer slotPosition = (int) (Math.random() * emptySlots.size());
-        System.out.println(slotPosition);
         Assert.assertNotNull(slotPosition);
     }
 
@@ -208,6 +204,6 @@ public class ParkingLotTest {
             Assert.assertEquals((Integer)0,pos2);
             Assert.assertEquals((Integer)1,pos3);
             Assert.assertEquals((Integer)1,pos4);
-        } catch (ParkingLotException e) { }
+        } catch (ParkingLotException e) { e.printStackTrace(); }
     }
 }
