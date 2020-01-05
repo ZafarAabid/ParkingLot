@@ -9,7 +9,7 @@ public class ParkingHandler {
 
     public ArrayList handleThisVehicle(ArrayList<ParkingLot> parkingLots, Object vehicle) {
         ArrayList<ParkingLot> lotListOfHighestEmptySlots = parkingLots;
-        Collections.sort(parkingLots, Comparator.comparing(list -> list.unOccupiedSlotList.size(), Comparator.reverseOrder()));
+        Collections.sort(parkingLots, Comparator.comparing(list -> list.listOfOccupiedSlots.size(), Comparator.reverseOrder()));
         parkingLot = lotListOfHighestEmptySlots.get(0);
         parkingLot.parkVehicle(vehicle);
         for (ParkingLot thisParkingLot : parkingLots)

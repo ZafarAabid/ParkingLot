@@ -1,40 +1,34 @@
 package com.parkinglot;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.IntStream;
 
 public class ParkingLot {
-    Map<Integer, ParkingSlot> vehicleSlotMap;
-    List<Integer> unOccupiedSlotList;
-
-    ParkingLot(Integer parkingLotSize) {
-        vehicleSlotMap = new HashMap<>();
-        unOccupiedSlotList = new ArrayList<Integer>();
-        IntStream.range(0, parkingLotSize).forEach(slotNumber -> this.unOccupiedSlotList.add(slotNumber));
+    public int thisParkingLotNumber;
+    List<ParkingSlot> listOfOccupiedSlots;
+    VehicleLocation location;
+    Integer noOfVehicleParked = 0;
+    ParkingLot(int thisParkingLotNumber, Integer parkingLotSize) {
+        listOfOccupiedSlots = new ArrayList<>(parkingLotSize);
+        location = new VehicleLocation();
+        this.thisParkingLotNumber = thisParkingLotNumber;
+        IntStream.range(0, parkingLotSize).forEach(slot -> this.listOfOccupiedSlots.add(new ParkingSlot(slot,null)));
     }
 
     public void parkVehicle(Object vehicle) {
-        vehicleSlotMap.put(unOccupiedSlotList.remove(0), new ParkingSlot(this,vehicle));
+        if(!listOfOccupiedSlots.contains(vehicle))
+            (listOfOccupiedSlots.stream().filter(slot -> slot.vehicle == (null)).findFirst().get()).vehicle=vehicle;
+        noOfVehicleParked++;
     }
 
-    public void parkVehicle(Integer slotPosition, Object vehicle) {
-        vehicleSlotMap.put(slotPosition, new ParkingSlot(this,vehicle));
-        unOccupiedSlotList.remove(slotPosition);
+    public boolean isVehiclePark(Object vehicle) {
+        return listOfOccupiedSlots.stream().anyMatch(slot -> slot.equals(vehicle) );
     }
 
-    public Integer vehicleLocation(Object vehicle) throws ParkingLotException {
-        Integer position;
-        try {
-            position = vehicleSlotMap
-                    .entrySet()
-                    .stream()
-                    .filter(a -> a.getValue().equals(vehicle))
-                    .findFirst().orElse(null)
-                    .getKey();
-        }catch (NullPointerException e){ throw new ParkingLotException("Unparking wrong vehicle",ParkingLotException.ExceptionType.UNPARKING_WRONG_VEHICLE); }
-        return position;
+    public  VehicleLocation findMyVehicle(Object vehicle) throws ParkingLotException {
+        ParkingSlot slot1 = listOfOccupiedSlots.stream().filter(slot -> slot.vehicle.equals(vehicle)).findFirst().get();
+        location.parkingSlot=slot1.slotPosition;
+        return location;
     }
 }

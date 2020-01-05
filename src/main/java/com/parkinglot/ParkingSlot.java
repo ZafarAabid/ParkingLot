@@ -1,18 +1,17 @@
 package com.parkinglot;
 
-import java.sql.Time;
 import java.util.Objects;
 
 public class
 ParkingSlot {
-    public final Object vehicle;
-    private final long vehicleParkingTime;
-    public ParkingLot parkingLot;
+    public   Integer slotPosition;
+    public  Object vehicle;
+    private  long vehicleParkingTime;
 
-    public ParkingSlot(ParkingLot parkingLotObject, Object vehicle) {
+    public ParkingSlot(Integer slotPosition, Object vehicle) {
         this.vehicleParkingTime = System.currentTimeMillis();
         this.vehicle = vehicle;
-        this.parkingLot = parkingLotObject;
+        this.slotPosition = slotPosition;
     }
 
     @Override
