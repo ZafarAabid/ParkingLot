@@ -7,7 +7,7 @@ import java.util.Comparator;
 public class ParkingHandler {
     private ParkingLot parkingLot;
 
-    public ArrayList handleThisVehicle(ArrayList<ParkingLot> parkingLots, Object vehicle) {
+    public ArrayList handleThisVehicle(ArrayList<ParkingLot> parkingLots, Vehicle vehicle) {
         ArrayList<ParkingLot> lotListOfHighestEmptySlots = parkingLots;
         Collections.sort(parkingLots, Comparator.comparing(list -> list.listOfOccupiedSlots.size(), Comparator.reverseOrder()));
         parkingLot = lotListOfHighestEmptySlots.get(0);

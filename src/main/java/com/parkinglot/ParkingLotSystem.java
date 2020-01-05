@@ -2,6 +2,7 @@ package com.parkinglot;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class ParkingLotSystem {
@@ -25,7 +26,7 @@ public class ParkingLotSystem {
         parkingLotObserver.add(owner);
     }
 
-    void park(Object vehicle, ParkingStrategy strategy) throws ParkingLotException {
+    void park(Vehicle vehicle, ParkingStrategy strategy) throws ParkingLotException {
         AtomicReference<Integer> totalSlotOccupied = new AtomicReference<>(0);
         parkingLots.stream().forEach(parkingLot1 -> totalSlotOccupied.updateAndGet(v -> v + parkingLot1.noOfVehicleParked));
         if (totalSlotOccupied.get() == parkingLotCapacity * noOfLots) {
@@ -37,7 +38,7 @@ public class ParkingLotSystem {
     }
 
 
-    public boolean isVehicleParked(Object vehicle) {
+    public boolean isVehicleParked(Vehicle vehicle) {
         return parkingLots.stream().anyMatch(parkingLot -> parkingLot.isVehiclePark(vehicle));
     }
    /* public void park(ParkingLot slot, Object vehicle) throws ParkingLotException {
@@ -46,7 +47,7 @@ public class ParkingLotSystem {
         parkingLot.parkVehicle(slot, vehicle);
     }*/
 
-    public Object unPark(Object vehicle) throws ParkingLotException {
+    public Object unPark(Vehicle vehicle) throws ParkingLotException {
         try {
             VehicleLocation myCar = findMyCar(vehicle);
             ParkingLot parkingLot = parkingLots.stream()
@@ -63,18 +64,31 @@ public class ParkingLotSystem {
     }
 
 
-    public VehicleLocation findMyCar(Object vehicle) throws ParkingLotException {
+    public VehicleLocation findMyCar(Vehicle vehicle) throws ParkingLotException {
         VehicleLocation location = new VehicleLocation();
         Integer noOfSlots = parkingLots.stream().findFirst().get().listOfOccupiedSlots.size();
             for (Integer slotNumber = 0; slotNumber < noOfSlots; slotNumber++)
                 for (ParkingLot lot : parkingLots)
-                    if (lot.listOfOccupiedSlots.get(slotNumber).vehicle == vehicle) {
+                    if ( lot.listOfOccupiedSlots.get(slotNumber).vehicle == vehicle ) {
                          location.parkingSlot = slotNumber;
                          location.parkinglot = lot.thisParkingLotNumber;
                         return location;
                     }
         throw new ParkingLotException("No Such Vehicle Available", ParkingLotException.ExceptionType.UNPARKING_WRONG_VEHICLE);
     }
+
+    public ArrayList<ParkingSlot> findCarsWithColor(Vehicle.VehicleColor vehicleColor)  {
+        ArrayList<ParkingSlot> slotArrayList = new ArrayList<>();
+        for (ParkingLot lot: parkingLots ) {
+            List<ParkingSlot> parkingSlotList  = (lot.listOfOccupiedSlots).stream()
+                        .filter(slot -> slot.vehicle != null
+                                && slot.vehicle.vehicleColor == vehicleColor)
+                        .collect(Collectors.toList());
+                slotArrayList.addAll(parkingSlotList);
+            }
+        return slotArrayList;
+    }
+
 
     public List findEmptySlots() {
         return parkingLot.listOfOccupiedSlots;

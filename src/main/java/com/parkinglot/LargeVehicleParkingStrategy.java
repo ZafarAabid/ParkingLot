@@ -6,7 +6,7 @@ import java.util.stream.Stream;
 
 public class LargeVehicleParkingStrategy implements ParkingStrategy {
     @Override
-    public ArrayList<ParkingLot> parkVehicle(ArrayList<ParkingLot> parkingLots, Object vehicle) throws ParkingLotException {
+    public ArrayList<ParkingLot> parkVehicle(ArrayList<ParkingLot> parkingLots, Vehicle vehicle) throws ParkingLotException {
         parkingLots.sort(Comparator.comparing(parkingLot -> parkingLot.noOfVehicleParked,Comparator.reverseOrder()));
         Integer noOfSlots = parkingLots.stream().findFirst().get().listOfOccupiedSlots.size();
         for (Integer slotNumber = 0; slotNumber < noOfSlots; slotNumber++)

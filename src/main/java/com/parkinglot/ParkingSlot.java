@@ -5,10 +5,10 @@ import java.util.Objects;
 public class
 ParkingSlot {
     public   Integer slotPosition;
-    public  Object vehicle;
+    public  Vehicle vehicle;
     private  long vehicleParkingTime;
 
-    public ParkingSlot(Integer slotPosition, Object vehicle) {
+    public ParkingSlot(Integer slotPosition, Vehicle vehicle) {
         this.vehicleParkingTime = System.currentTimeMillis();
         this.vehicle = vehicle;
         this.slotPosition = slotPosition;
