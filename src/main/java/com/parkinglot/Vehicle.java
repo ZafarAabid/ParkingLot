@@ -2,7 +2,18 @@ package com.parkinglot;
 
 public class Vehicle {
 
-    public enum VehicleColor {WHITE,OTHER}       public VehicleColor vehicleColor;
+    public final VehicleType vehicleType;
+    public final String thisVehicleNumberPlate;
+    public VehicleColor vehicleColor;
 
-    Vehicle(VehicleColor color)     { this.vehicleColor = color; }
+    public enum VehicleColor {WHITE, BLUE, OTHER}
+    public enum VehicleType {TOYOTA}
+
+    Vehicle(String vehicleNumberPlate, VehicleColor color, VehicleType vehicleType) {
+        this.thisVehicleNumberPlate = vehicleNumberPlate;
+        this.vehicleColor = color;
+        this.vehicleType = vehicleType;
+    }
+
+
 }

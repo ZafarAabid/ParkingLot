@@ -4,9 +4,9 @@ import java.util.Objects;
 
 public class
 ParkingSlot {
-    public   Integer slotPosition;
-    public  Vehicle vehicle;
-    private  long vehicleParkingTime;
+    public Integer slotPosition;
+    public Vehicle vehicle;
+    public long vehicleParkingTime;
 
     public ParkingSlot(Integer slotPosition, Vehicle vehicle) {
         this.vehicleParkingTime = System.currentTimeMillis();

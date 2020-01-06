@@ -77,16 +77,18 @@ public class ParkingLotSystem {
         throw new ParkingLotException("No Such Vehicle Available", ParkingLotException.ExceptionType.UNPARKING_WRONG_VEHICLE);
     }
 
-    public ArrayList<ParkingSlot> findCarsWithColor(Vehicle.VehicleColor vehicleColor)  {
+    public ArrayList<VehicleDTO> findCarsWithColor(Vehicle.VehicleColor vehicleColor, Vehicle.VehicleType vehicleType)  {
         ArrayList<ParkingSlot> slotArrayList = new ArrayList<>();
         for (ParkingLot lot: parkingLots ) {
             List<ParkingSlot> parkingSlotList  = (lot.listOfOccupiedSlots).stream()
                         .filter(slot -> slot.vehicle != null
-                                && slot.vehicle.vehicleColor == vehicleColor)
+                                && slot.vehicle.vehicleColor == vehicleColor && slot.vehicle.vehicleType == vehicleType)
                         .collect(Collectors.toList());
                 slotArrayList.addAll(parkingSlotList);
             }
-        return slotArrayList;
+        ArrayList<VehicleDTO> vehicleDTOS = new ArrayList<>();
+        slotArrayList.stream().forEach(slot -> vehicleDTOS.add(new VehicleDTO(slot)));
+        return vehicleDTOS;
     }
 
 
